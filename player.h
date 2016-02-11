@@ -3,39 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "bullet.h"
-//#include "gamedefines.h"
-
-//std::vector<Bullet> bullets;
-
-#define WIDTH 800
-#define HEIGHT 600
-
-#define PLAYER_SPEED_UP -2.5
-#define PLAYER_SPEED_DOWN 2.5
-#define PLAYER_SPEED_LEFT -2.5
-#define PLAYER_SPEED_RIGHT 2.5
-
-enum PlayerInput
-{
-    INPUT_NULL = -1,
-
-    MOVE_UP = 0,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    MOVE_UP_LEFT,
-    MOVE_UP_RIGHT,
-    MOVE_DOWN_LEFT,
-    MOVE_DOWN_RIGHT,
-
-    SPAWN_BULLET
-};
-
-enum PlayerState
-{
-    STATE_DEAD = 0,
-    STATE_ALIVE
-};
+#include "gamedefines.h"
 
 class Player
 {
@@ -80,12 +48,23 @@ class Player
             return this->m_canMove;
         }
 
+        void SetDirection(int _dir)
+        {
+            this->m_direction = _dir;
+        }
+
+        int GetDirection()
+        {
+            return this->m_direction;
+        }
+
         sf::CircleShape m_object;
 
     private:
         int m_lives;
         bool m_isAlive;
         bool m_canMove;
+        int m_direction;
 
 };
 

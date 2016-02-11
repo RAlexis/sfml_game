@@ -71,11 +71,13 @@ void Player::Update(int _moveInput)
                 break;
 
             case MOVE_LEFT:
+                this->SetDirection(MOVE_LEFT);
                 if (this->CanMoveToPoint(PLAYER_SPEED_LEFT, 0))
                     this->m_object.move(PLAYER_SPEED_LEFT, 0);
                 break;
 
             case MOVE_RIGHT:
+                this->SetDirection(MOVE_RIGHT);
                 if (this->CanMoveToPoint(PLAYER_SPEED_RIGHT, 0))
                     this->m_object.move(PLAYER_SPEED_RIGHT, 0);
                 break;
@@ -101,8 +103,8 @@ void Player::Update(int _moveInput)
                 break;
 
             case SPAWN_BULLET:
-                std::cout << "spawn bullet" << std::endl;
-                Bullet bullet(this->GetPosition(), this->m_object.getRotation());
+                //std::cout << "spawn bullet" << std::endl;
+                Bullet bullet(this->GetPosition(), this->m_object.getRotation(), this->GetDirection());
                 this->bullets.push_back(bullet);
                 break;
         }

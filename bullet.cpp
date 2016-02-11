@@ -3,39 +3,48 @@
 const float Bullet::lifetime = 1000.0f;
 const float Bullet::speed = 0.3f;
 
-Bullet::Bullet(sf::Vector2f position, float angle) :
+Bullet::Bullet(sf::Vector2f position, float angle, int direction) :
     is_alive(true),
     remaining_life(lifetime),
     //direction(cos(angle * DEG2RAD), sin(angle * DEG2RAD)) {
-    direction(1, 0) { // -1, 0 <- left; 1, 0 -> right
+    direction(this->GetXFromDirection(direction), this->GetYFromDirection(direction)) { // -1, 0 <- left; 1, 0 -> right
     setPosition(position);
 }
 
-Bullet::~Bullet() {
+Bullet::~Bullet()
+{
+
 }
 
-bool Bullet::isAlive() {
+bool Bullet::isAlive()
+{
     return is_alive;
 }
 
-void Bullet::update(float frametime) {
+void Bullet::update(float frametime)
+{
     if (!is_alive) return;
 
     remaining_life -= frametime;
-    if (remaining_life <= 0) is_alive = false;
+
+    if (remaining_life <= 0)
+        is_alive = false;
 
     sf::Vector2f distance = direction * speed * frametime;
     move(distance);
 }
 
-void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
     sf::Vertex line[] = {
         sf::Vertex(getPosition()),
         sf::Vertex(getPosition() + (direction * 5.0f))
     };
+
     target.draw(line, 2, sf::Lines, states);
 }
 
-void Bullet::kill() {
+void Bullet::kill()
+{
     is_alive = false;
 }
