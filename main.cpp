@@ -2,9 +2,10 @@
 
 int main()
 {
+    Game game;
+
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML game");
-    Renderer* renderer = new Renderer();
-    Player player(3);
+    Renderer renderer;
 
     Menu menu(window.getSize());
     menu.ShowMenu(&window);
@@ -21,22 +22,8 @@ int main()
                 menu.ShowMenu(&window);
         }
 
-        player.Update(player.GetPlayerInput());
-
-        std::vector<Bullet>::iterator start_bullets = player.bullets.begin();
-        while (start_bullets != player.bullets.end()) {
-            if (start_bullets->isAlive()) {
-                start_bullets->update(1);
-                ++start_bullets;
-            }
-            else
-                start_bullets = player.bullets.erase(start_bullets);
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-            player.Update(SPAWN_BULLET);
-
-        renderer->Draw(&window, &player);
+        game.Update();
+        renderer.Draw(&window, game.getPlayer(), &game);
     }
 
     return 0;

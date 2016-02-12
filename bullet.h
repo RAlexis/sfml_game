@@ -19,6 +19,7 @@ public:
     void kill();
     void update(float frametime);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    void fire();
 
 private:
     bool is_alive;

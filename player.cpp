@@ -17,6 +17,7 @@ Player::~Player()
 
 }
 
+///!!! TODO: switch()
 int Player::GetPlayerInput()
 {
   //  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -102,11 +103,12 @@ void Player::Update(int _moveInput)
                     this->m_object.move(PLAYER_SPEED_RIGHT / std::sqrt(2.f), PLAYER_SPEED_DOWN / std::sqrt(2.f));
                 break;
 
-            case SPAWN_BULLET:
+            // I think it's safe to remove, but I'll keep the code for some time until I'm sure
+            //case SPAWN_BULLET:
                 //std::cout << "spawn bullet" << std::endl;
-                Bullet bullet(this->GetPosition(), this->m_object.getRotation(), this->GetDirection());
-                this->bullets.push_back(bullet);
-                break;
+                //Bullet bullet(this->GetPosition(), this->m_object.getRotation(), this->GetDirection());
+                //this->bullets.push_back(bullet);
+                //break;
         }
     }
 }

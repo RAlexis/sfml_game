@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "renderer.h"
 #include "player.h"
-//#include "bullet.h"
+#include "bullet.h"
+#include "game.h"
 
 #endif

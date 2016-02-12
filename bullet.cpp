@@ -48,3 +48,8 @@ void Bullet::kill()
 {
     is_alive = false;
 }
+
+void Bullet::fire()
+{
+
+}

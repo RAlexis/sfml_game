@@ -11,13 +11,13 @@ Renderer::~Renderer()
 }
 
 // Main draw function
-void Renderer::Draw(sf::RenderWindow* _window, Player* _player)
+void Renderer::Draw(sf::RenderWindow* _window, Player* _player, Game* _game)
 {
     _window->clear();
 
     this->DrawPlayer(_window, _player);
     this->DrawLives(_window, _player);
-    this->DrawBullet(_window, _player);
+    this->DrawBullet(_window, _game);
 
     _window->display();
 }
@@ -43,8 +43,8 @@ void Renderer::DrawLives(sf::RenderWindow* _window, Player* _player)
     _window->draw(text);
 }
 
-void Renderer::DrawBullet(sf::RenderWindow* _window, Player* _player)
+void Renderer::DrawBullet(sf::RenderWindow* _window, Game* _game)
 {
-    for (std::vector<Bullet>::iterator it = _player->bullets.begin(); it != _player->bullets.end(); ++it)
+    for (std::vector<Bullet>::iterator it = _game->m_bullets.begin(); it != _game->m_bullets.end(); ++it)
         _window->draw(*it);
 }

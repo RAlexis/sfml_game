@@ -10,7 +10,6 @@ class Player
     public:
         Player(int _lives);
         ~Player();
-        std::vector<Bullet> bullets;
 
         int GetPlayerInput();
         
