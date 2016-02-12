@@ -10,24 +10,28 @@ Game::~Game()
 
 }
 
-void Game::Update()
+void Game::update(float frametime)
 {
-    this->player->Update(this->player->GetPlayerInput());
+    player->update(frametime);
     
     std::vector<Bullet>::iterator start_bullets = this->m_bullets.begin();
     while (start_bullets != this->m_bullets.end()) {
         if (start_bullets->isAlive()) {
-            start_bullets->update(1);
+            start_bullets->update(frametime);
             ++start_bullets;
         }
         else
             start_bullets = this->m_bullets.erase(start_bullets);
     }
+}
+
+void Game::onEvent(sf::Event event)
+{
+    player->onEvent(event);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        Bullet bullet(this->player->GetPosition(), this->player->m_object.getRotation(), this->player->GetDirection());
-        //Bullet bullet(this->GetPosition(), this->m_object.getRotation(), this->GetDirection());
+        Bullet bullet(this->player->getPosition(), this->player->getRotation());
         this->m_bullets.push_back(bullet);
     }
 }

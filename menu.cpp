@@ -103,7 +103,5 @@ void Menu::MoveDown()
 void Menu::Draw(sf::RenderWindow* _window)
 {
     for (int i = 0; i < NUMBER_OF_ITEMS; ++i)
-    {
         _window->draw(menu[i]);
-    }
 }

@@ -23,7 +23,7 @@ class Menu
             return m_selectedItemIndex;
         }
 
-        void Draw(sf::RenderWindow* _window);
+        void Draw(sf::RenderWindow* window);
 
     private:
         int m_selectedItemIndex;

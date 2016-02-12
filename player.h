@@ -1,6 +1,11 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 
+#include <math.h>
+#include <SFML/Graphics.hpp>
+#include "gamedefines.h"
+
+/*
 #include <SFML/Graphics.hpp>
 #include "bullet.h"
 #include "gamedefines.h"
@@ -64,7 +69,27 @@ class Player
         bool m_isAlive;
         bool m_canMove;
         int m_direction;
+};*/
 
+class Player : public sf::Drawable, public sf::Transformable
+{
+    static const float acceleration;
+    static const float maxSpeed;
+    static const float rotationSpeed;
+
+    public:
+        Player();
+        ~Player();
+
+        void reset();
+        void update(float frametime);
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        void onEvent(const sf::Event& event);
+
+    private:
+        sf::Vector2f speed;
+        sf::ConvexShape shape;
+        int h_move, v_move;
 };
 
 #endif

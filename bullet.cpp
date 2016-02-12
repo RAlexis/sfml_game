@@ -3,11 +3,10 @@
 const float Bullet::lifetime = 1000.0f;
 const float Bullet::speed = 0.3f;
 
-Bullet::Bullet(sf::Vector2f position, float angle, int direction) :
+Bullet::Bullet(sf::Vector2f position, float angle) :
     is_alive(true),
     remaining_life(lifetime),
-    //direction(cos(angle * DEG2RAD), sin(angle * DEG2RAD)) {
-    direction(this->GetXFromDirection(direction), this->GetYFromDirection(direction)) { // -1, 0 <- left; 1, 0 -> right
+    direction(cos(angle * DEG2RAD), sin(angle * DEG2RAD)) {
     setPosition(position);
 }
 

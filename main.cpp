@@ -4,11 +4,15 @@ int main()
 {
     Game game;
 
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML game");
+    sf::RenderWindow window(sf::VideoMode(APP_WIDTH, APP_HEIGHT), APP_NAME);
+    window.setKeyRepeatEnabled(true);
+    window.setFramerateLimit(APP_FRAMESPERSECOND);
     Renderer renderer;
 
     Menu menu(window.getSize());
     menu.ShowMenu(&window);
+
+    sf::Clock clock;
 
     while (window.isOpen())
     {
@@ -22,8 +26,9 @@ int main()
                 menu.ShowMenu(&window);
         }
 
-        game.Update();
-        renderer.Draw(&window, game.getPlayer(), &game);
+        game.update(clock.restart().asMilliseconds());
+        game.onEvent(event);
+        renderer.Draw(window, game);
     }
 
     return 0;

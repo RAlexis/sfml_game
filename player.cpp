@@ -1,15 +1,24 @@
 #include "player.h"
-#include <iostream> // print to console
 
-Player::Player(int _lives)
-{
-    this->m_lives = _lives;
-    this->m_canMove = true;
+const float Player::acceleration = 5.0f;
+const float Player::maxSpeed = 2.0f;
+const float Player::rotationSpeed = 0.3f;
 
-    this->m_object.setRadius(5);
-    this->m_object.setPosition(200, 200);
-    this->m_object.setFillColor(sf::Color::Red);
+Player::Player() {
+    shape.setPointCount(3);
+    shape.setPoint(0, sf::Vector2f(10.0f, 0.0f));
+    shape.setPoint(1, sf::Vector2f(-10.0f, 7.5f));
+    shape.setPoint(2, sf::Vector2f(-10.0f, -7.5f));
 
+    shape.setFillColor(sf::Color(0, 0, 0, 0));
+    shape.setOutlineColor(sf::Color::White);
+    shape.setOutlineThickness(1);
+    shape.setPosition(0.0f, 0.0f);
+
+    h_move = 0;
+    v_move = 0;
+
+    reset();
 }
 
 Player::~Player()
@@ -17,118 +26,61 @@ Player::~Player()
 
 }
 
-///!!! TODO: switch()
-int Player::GetPlayerInput()
-{
-  //  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    //    return SPAWN_BULLET;
-
-    // MOVEMENT INPUT
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            return MOVE_UP_LEFT;
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            return MOVE_UP_RIGHT;
-        else
-            return MOVE_UP;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            return MOVE_DOWN_LEFT;
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            return MOVE_DOWN_RIGHT;
-        else
-            return MOVE_DOWN;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        return MOVE_LEFT;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        return MOVE_RIGHT;
-
-    // END MOVEMENT INPUT
-
-    return INPUT_NULL;
+void Player::reset() {
+    setPosition(APP_WIDTH / 2, APP_HEIGHT / 2);
+    setRotation(0.0f);
+    speed.x = 0.0f;
+    speed.y = 0.0f;
 }
 
-void Player::Update(int _moveInput)
-{
-    if (this->CanMove()) // safe to remove
-    {
-        switch (_moveInput)
-        {
-            case INPUT_NULL:
-                return;
-                break;
+void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    states.transform *= getTransform();
+    target.draw(shape, states);
+}
 
-            case MOVE_UP:
-                if (this->CanMoveToPoint(0, PLAYER_SPEED_UP))
-                    this->m_object.move(0, PLAYER_SPEED_UP);
-                break;
-
-            case MOVE_DOWN:
-                if (this->CanMoveToPoint(0, PLAYER_SPEED_DOWN))
-                    this->m_object.move(0, PLAYER_SPEED_DOWN);
-                break;
-
-            case MOVE_LEFT:
-                this->SetDirection(MOVE_LEFT);
-                if (this->CanMoveToPoint(PLAYER_SPEED_LEFT, 0))
-                    this->m_object.move(PLAYER_SPEED_LEFT, 0);
-                break;
-
-            case MOVE_RIGHT:
-                this->SetDirection(MOVE_RIGHT);
-                if (this->CanMoveToPoint(PLAYER_SPEED_RIGHT, 0))
-                    this->m_object.move(PLAYER_SPEED_RIGHT, 0);
-                break;
-
-            case MOVE_UP_LEFT:
-                if (this->CanMoveToPoint(PLAYER_SPEED_LEFT, PLAYER_SPEED_UP))
-                    this->m_object.move(PLAYER_SPEED_LEFT / std::sqrt(2.f), PLAYER_SPEED_UP / std::sqrt(2.f));
-                break;
-
-            case MOVE_UP_RIGHT:
-                if (this->CanMoveToPoint(PLAYER_SPEED_RIGHT, PLAYER_SPEED_UP))
-                    this->m_object.move(PLAYER_SPEED_RIGHT / std::sqrt(2.f), PLAYER_SPEED_UP / std::sqrt(2.f));
-                break;
-
-            case MOVE_DOWN_LEFT:
-                if (this->CanMoveToPoint(PLAYER_SPEED_LEFT, PLAYER_SPEED_DOWN))
-                    this->m_object.move(PLAYER_SPEED_LEFT / std::sqrt(2.f), PLAYER_SPEED_DOWN / std::sqrt(2.f));
-                break;
-
-            case MOVE_DOWN_RIGHT:
-                if (this->CanMoveToPoint(PLAYER_SPEED_RIGHT, PLAYER_SPEED_DOWN))
-                    this->m_object.move(PLAYER_SPEED_RIGHT / std::sqrt(2.f), PLAYER_SPEED_DOWN / std::sqrt(2.f));
-                break;
-
-            // I think it's safe to remove, but I'll keep the code for some time until I'm sure
-            //case SPAWN_BULLET:
-                //std::cout << "spawn bullet" << std::endl;
-                //Bullet bullet(this->GetPosition(), this->m_object.getRotation(), this->GetDirection());
-                //this->bullets.push_back(bullet);
-                //break;
-        }
+void Player::update(float frametime) {
+    if (h_move != 0) {
+        rotate(h_move * rotationSpeed * frametime);
     }
+
+    if (v_move != 0) {
+        float rotation = getRotation();
+        float x_speed = cos(rotation * DEG2RAD);
+        float y_speed = sin(rotation * DEG2RAD);
+
+        speed.x += v_move * acceleration * frametime * x_speed / 1000;
+        speed.y += v_move * acceleration * frametime * y_speed / 1000;
+        if ((speed.x * speed.x) > (maxSpeed * maxSpeed))
+            speed.x = speed.x > 0 ? maxSpeed : -maxSpeed;
+        if ((speed.y * speed.y) > (maxSpeed * maxSpeed))
+            speed.y = speed.y > 0 ? maxSpeed : -maxSpeed;
+    }
+    move(speed);
+
+    sf::Vector2f position = getPosition();
+
+    if (position.x < -10.0f)
+        position.x = APP_WIDTH;
+    else if (position.x > APP_WIDTH)
+        position.x = 0.0f;
+
+    if (position.y < -10.0f)
+        position.y = APP_HEIGHT;
+    else if (position.y > APP_HEIGHT)
+        position.y = 0.0f;
+    setPosition(position);
 }
 
-bool Player::CanMoveToPoint(float _xVal, float _yVal) // movement collision with the boundaries of the map
-{
-    int y = this->GetPosition().y;
-    int x = this->GetPosition().x;
+void Player::onEvent(const sf::Event& event) {
+    h_move = 0;
+    v_move = 0;
 
-    if (y + _yVal > HEIGHT - this->GetRadius())
-        return false;
-
-    if (y + _yVal < 0)
-        return false;
-
-    if (x + _xVal > WIDTH - this->GetRadius())
-        return false;
-
-    if (x + _xVal < 0)
-        return false;
-
-    return true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        v_move = 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        h_move = 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        v_move = -1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        h_move = -1;
 }

@@ -10,22 +10,18 @@ class Game
     public:
         Game();
         ~Game();
-        void Update();
+        void update(float frametime);
+        void onEvent(sf::Event event);
 
         Player* getPlayer()
         {
             return this->player;
         }
 
-    //private:
-        //sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML game");
-        //Menu menu(window.getSize());
-        //Renderer* renderer = new Renderer();
-        Player* player = new Player(3); // if I use Player player(3) it doesn't work
+        Player* player = new Player(); // if I use Player player() it doesn't work
 
     //private:
-        std::vector<Bullet> m_bullets;
-
+        std::vector<Bullet> m_bullets; // return m_bullets using a function and make this private
 };
 
 #endif

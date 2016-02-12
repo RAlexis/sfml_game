@@ -11,21 +11,23 @@ Renderer::~Renderer()
 }
 
 // Main draw function
-void Renderer::Draw(sf::RenderWindow* _window, Player* _player, Game* _game)
+void Renderer::Draw(sf::RenderWindow& window, Game& game)
 {
-    _window->clear();
+    window.clear();
 
-    this->DrawPlayer(_window, _player);
-    this->DrawLives(_window, _player);
-    this->DrawBullet(_window, _game);
+    window.draw(*game.getPlayer());
+    this->DrawBullet(window, game);
 
-    _window->display();
+    window.display();
 }
 
-void Renderer::DrawPlayer(sf::RenderWindow* _window, Player* _player)
+void Renderer::DrawBullet(sf::RenderWindow& window, Game& game)
 {
-    _window->draw(_player->m_object);
+    for (std::vector<Bullet>::iterator it = game.m_bullets.begin(); it != game.m_bullets.end(); ++it)
+        window.draw(*it);
 }
+
+/*
 
 void Renderer::DrawLives(sf::RenderWindow* _window, Player* _player)
 {
@@ -33,7 +35,7 @@ void Renderer::DrawLives(sf::RenderWindow* _window, Player* _player)
     font.loadFromFile("arial.ttf");
 
     std::ostringstream tmp;
-    tmp << "Lives: " << _player->GetLives();
+   // tmp << "Lives: " << _player->GetLives();
 
     sf::Text text(tmp.str(), font);
     text.setCharacterSize(15);
@@ -48,3 +50,20 @@ void Renderer::DrawBullet(sf::RenderWindow* _window, Game* _game)
     for (std::vector<Bullet>::iterator it = _game->m_bullets.begin(); it != _game->m_bullets.end(); ++it)
         _window->draw(*it);
 }
+
+void Renderer::DrawText(sf::RenderWindow* _window, Game* _game)
+{
+    sf::Font font;
+    font.loadFromFile("arial.ttf");
+
+    std::ostringstream tmp;
+    tmp << "Bullets: " << _game->m_bullets.size();
+
+    sf::Text text(tmp.str(), font);
+    text.setCharacterSize(15);
+    text.setColor(sf::Color::Green);
+    text.setPosition(0, 555);
+
+    _window->draw(text);
+}
+*/
