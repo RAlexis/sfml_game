@@ -3,10 +3,10 @@
 const float Bullet::lifetime = 1000.0f;
 const float Bullet::speed = 0.3f;
 
-Bullet::Bullet(sf::Vector2f position, float angle) :
+Bullet::Bullet(sf::Vector2f position, int direction) :
     is_alive(true),
     remaining_life(lifetime),
-    direction(cos(angle * DEG2RAD), sin(angle * DEG2RAD)) {
+    direction(getXFromDirection(direction), 0) {
     setPosition(position);
 }
 
@@ -46,9 +46,4 @@ void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Bullet::kill()
 {
     is_alive = false;
-}
-
-void Bullet::fire()
-{
-
 }

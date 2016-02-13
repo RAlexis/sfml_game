@@ -1,11 +1,6 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 
-#include <math.h>
-#include <SFML/Graphics.hpp>
-#include "gamedefines.h"
-
-/*
 #include <SFML/Graphics.hpp>
 #include "bullet.h"
 #include "gamedefines.h"
@@ -13,83 +8,64 @@
 class Player
 {
     public:
-        Player(int _lives);
+        Player();
         ~Player();
 
-        int GetPlayerInput();
+        void setLives(int lives)
+        {
+            this->m_lives = lives;
+        }
         
-        int GetLives()
+        int getLives()
         {
             return this->m_lives;
         }
 
-        bool SetState(bool _state)
+        bool setState(bool _state)
         {
             this->m_isAlive = _state;
         }
 
-        bool IsAlive()
+        bool isAlive()
         {
             return this->m_isAlive;
         }
 
-        void Update(int _moveInput);
+        void update();
 
-        bool CanMoveToPoint(float _xVal, float _yVal);
-
-        sf::Vector2f GetPosition()
+        sf::Vector2f getPosition()
         {
-            return this->m_object.getPosition();
+            return this->position;
         }
 
-        float GetRadius()
+        void setDirection(int dir)
         {
-            return this->m_object.getRadius();
+            this->direction = dir;
         }
 
-        bool CanMove()
+        int getDirection()
         {
-            return this->m_canMove;
+            return this->direction;
         }
 
-        void SetDirection(int _dir)
+        void onEvent(sf::Event& event);
+
+        sf::Sprite getSpriteSheet()
         {
-            this->m_direction = _dir;
+            return this->playerSprite;
         }
 
-        int GetDirection()
-        {
-            return this->m_direction;
-        }
-
-        sf::CircleShape m_object;
+        sf::Clock playerClock;
+        sf::Time time;
+        sf::Texture playerTexture;
+        sf::Sprite playerSprite;
+        sf::Vector2f position;
+        sf::Vector2i source;
 
     private:
         int m_lives;
         bool m_isAlive;
-        bool m_canMove;
-        int m_direction;
-};*/
-
-class Player : public sf::Drawable, public sf::Transformable
-{
-    static const float acceleration;
-    static const float maxSpeed;
-    static const float rotationSpeed;
-
-    public:
-        Player();
-        ~Player();
-
-        void reset();
-        void update(float frametime);
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        void onEvent(const sf::Event& event);
-
-    private:
-        sf::Vector2f speed;
-        sf::ConvexShape shape;
-        int h_move, v_move;
+        int direction;
 };
 
 #endif

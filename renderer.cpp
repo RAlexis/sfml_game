@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include <iostream>
 
 Renderer::Renderer()
 {
@@ -15,7 +16,7 @@ void Renderer::Draw(sf::RenderWindow& window, Game& game)
 {
     window.clear();
 
-    window.draw(*game.getPlayer());
+    window.draw(game.getPlayer()->getSpriteSheet());
     this->DrawBullet(window, game);
 
     window.display();
@@ -23,8 +24,11 @@ void Renderer::Draw(sf::RenderWindow& window, Game& game)
 
 void Renderer::DrawBullet(sf::RenderWindow& window, Game& game)
 {
-    for (std::vector<Bullet>::iterator it = game.m_bullets.begin(); it != game.m_bullets.end(); ++it)
-        window.draw(*it);
+    for (auto& i : game.m_bullets)
+    {
+            window.draw(i);
+            //i.setAlreadyFired(true);
+    }
 }
 
 /*

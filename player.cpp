@@ -1,9 +1,6 @@
 #include "player.h"
-
-const float Player::acceleration = 5.0f;
-const float Player::maxSpeed = 2.0f;
-const float Player::rotationSpeed = 0.3f;
-
+#include <iostream>
+/*
 Player::Player() {
     shape.setPointCount(3);
     shape.setPoint(0, sf::Vector2f(10.0f, 0.0f));
@@ -15,9 +12,6 @@ Player::Player() {
     shape.setOutlineThickness(1);
     shape.setPosition(0.0f, 0.0f);
 
-    h_move = 0;
-    v_move = 0;
-
     reset();
 }
 
@@ -28,9 +22,6 @@ Player::~Player()
 
 void Player::reset() {
     setPosition(APP_WIDTH / 2, APP_HEIGHT / 2);
-    setRotation(0.0f);
-    speed.x = 0.0f;
-    speed.y = 0.0f;
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -39,23 +30,23 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 void Player::update(float frametime) {
-    if (h_move != 0) {
-        rotate(h_move * rotationSpeed * frametime);
+    switch (this->getDirection())
+    {
+        case DIRECTION_UP:
+            move(2.5, 0);
+            break;
+
+        case DIRECTION_DOWN:
+            move(-2.5, 0);
+            break;
+
+        case DIRECTION_LEFT:
+            move(0, -2.5);
+
+        case DIRECTION_RIGHT:
+            move(0, 2.5);
     }
 
-    if (v_move != 0) {
-        float rotation = getRotation();
-        float x_speed = cos(rotation * DEG2RAD);
-        float y_speed = sin(rotation * DEG2RAD);
-
-        speed.x += v_move * acceleration * frametime * x_speed / 1000;
-        speed.y += v_move * acceleration * frametime * y_speed / 1000;
-        if ((speed.x * speed.x) > (maxSpeed * maxSpeed))
-            speed.x = speed.x > 0 ? maxSpeed : -maxSpeed;
-        if ((speed.y * speed.y) > (maxSpeed * maxSpeed))
-            speed.y = speed.y > 0 ? maxSpeed : -maxSpeed;
-    }
-    move(speed);
 
     sf::Vector2f position = getPosition();
 
@@ -68,19 +59,107 @@ void Player::update(float frametime) {
         position.y = APP_HEIGHT;
     else if (position.y > APP_HEIGHT)
         position.y = 0.0f;
+
     setPosition(position);
 }
 
 void Player::onEvent(const sf::Event& event) {
-    h_move = 0;
-    v_move = 0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        std::cout << "moving up" << std::endl;
+        this->setDirection(DIRECTION_UP);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        std::cout << "moving right" << std::endl;
+        this->setDirection(DIRECTION_RIGHT);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        std::cout << "moving down" << std::endl;
+        this->setDirection(DIRECTION_DOWN);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        std::cout << "moving left" << std::endl;
+        this->setDirection(DIRECTION_LEFT);
+    }
+}*/
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        v_move = 1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        h_move = 1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        v_move = -1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        h_move = -1;
+Player::Player()
+{
+    this->setLives(3);
+    position.x = APP_WIDTH / 2;
+    position.y = APP_HEIGHT / 2;
+    source.x = 32;
+    source.y = 0;
+
+    if (!playerTexture.loadFromFile("player.png"))
+        std::cout << "[ERROR] Could not load player.png." << std::endl;
+
+    playerSprite.setTexture(playerTexture);
+
+    playerSprite.setPosition(position);
+}
+
+Player::~Player()
+{
+
+}
+
+void Player::update()
+{
+    playerSprite.setPosition(position);
+        
+    time = playerClock.getElapsedTime();
+
+    if (time.asMilliseconds() >= 300)
+    {
+        source.x++;
+
+        if (source.x * 32 >= playerTexture.getSize().x)
+            source.x = 0;
+
+        playerClock.restart();
+    }
+
+    playerSprite.setTextureRect(sf::IntRect(source.x * 32, source.y * 32, 32, 32));
+
+    playerSprite.setPosition(position);
+}
+
+void Player::onEvent(sf::Event& event)
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        //std::cout << "moving up" << std::endl;
+        position.y -= 2.5;
+        //this->getSpriteSheet().move(0, 2.5);
+        this->setDirection(DIRECTION_UP);
+        source.y = 3;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        //std::cout << "moving right" << std::endl;
+        position.x += 2.5;
+        //this->getSpriteSheet().move(0, 20);
+        this->setDirection(DIRECTION_RIGHT);
+        source.y = 2;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        //std::cout << "moving down" << std::endl;
+        position.y += 2.5;
+        //this->getSpriteSheet().move(-20, 0);
+        this->setDirection(DIRECTION_DOWN);
+        source.y = 0;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        //std::cout << "moving left" << std::endl;
+        position.x -= 2.5;
+        //this->getSpriteSheet().move(0, -20);
+        this->setDirection(DIRECTION_LEFT);
+        source.y = 1;
+    }
 }

@@ -1,18 +1,19 @@
 #include "main.h"
+#include <iostream>
 
 int main()
 {
     Game game;
 
     sf::RenderWindow window(sf::VideoMode(APP_WIDTH, APP_HEIGHT), APP_NAME);
-    window.setKeyRepeatEnabled(true);
-    window.setFramerateLimit(APP_FRAMESPERSECOND);
+    game.init(window);
     Renderer renderer;
 
     Menu menu(window.getSize());
     menu.ShowMenu(&window);
 
     sf::Clock clock;
+
 
     while (window.isOpen())
     {

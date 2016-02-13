@@ -10,19 +10,37 @@ class Bullet : public sf::Drawable, public sf::Transformable {
     static const float speed;
 
 public:
-    Bullet(sf::Vector2f position, float angle);
+    Bullet(sf::Vector2f position, int direction);
     ~Bullet();
 
     bool isAlive();
     void kill();
     void update(float frametime);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    void fire();
+
+    void setAlreadyFired(bool val)
+    {
+        this->alreadyFired = val;
+    }
+
+    bool hasAlreadyFired()
+    {
+        return alreadyFired;
+    }
+
+    int getXFromDirection(int dir)
+    {
+        if (dir == DIRECTION_LEFT)
+            return -1;
+        else
+            return 1;
+    }
 
 private:
     bool is_alive;
     float remaining_life;
     sf::Vector2f direction;
+    bool alreadyFired;
 };
 
 #endif

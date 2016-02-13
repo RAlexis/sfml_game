@@ -13,20 +13,12 @@
 
 #define DEG2RAD 3.14159f / 180.0f
 
-enum PlayerInput
+enum Direction
 {
-    INPUT_NULL = -1,
-
-    MOVE_UP = 0,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    MOVE_UP_LEFT,
-    MOVE_UP_RIGHT,
-    MOVE_DOWN_LEFT,
-    MOVE_DOWN_RIGHT,
-
-    SPAWN_BULLET
+    DIRECTION_UP,
+    DIRECTION_DOWN,
+    DIRECTION_LEFT,
+    DIRECTION_RIGHT
 };
 
 enum PlayerState
