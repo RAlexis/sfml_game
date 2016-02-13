@@ -108,16 +108,15 @@ Player::~Player()
 }
 
 void Player::update()
-{
-    playerSprite.setPosition(position);
-        
+{       
     time = playerClock.getElapsedTime();
 
     if (time.asMilliseconds() >= 300)
     {
         source.x++;
 
-        if (source.x * 32 >= playerTexture.getSize().x)
+        //if (source.x * 32 >= playerTexture.getSize().x)
+        if (source.x >= 3)  
             source.x = 0;
 
         playerClock.restart();

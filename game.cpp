@@ -26,6 +26,7 @@ void Game::update(float frametime)
         else
             start_bullets = this->m_bullets.erase(start_bullets);
     }
+    
 }
 
 void Game::onEvent(sf::Event event)
@@ -46,4 +47,5 @@ void Game::init(sf::RenderWindow& window)
 {
     window.setKeyRepeatEnabled(false);
     window.setFramerateLimit(APP_FRAMESPERSECOND);
+    window.setVerticalSyncEnabled(true);
 }
