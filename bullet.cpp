@@ -7,7 +7,7 @@ Bullet::Bullet(sf::Vector2f position, int direction) :
     is_alive(true),
     remaining_life(lifetime),
     direction(getXFromDirection(direction), 0) {
-    setPosition(position);
+    setPosition(sf::Vector2f(position.x + 20, position.y + 16));
 }
 
 Bullet::~Bullet()
