@@ -28,7 +28,6 @@ void Game::update(float frametime)
             
             if (b.intersects(e))
                 enemy->setState(STATE_DEAD);
-                //enemy->setPosition(sf::Vector2f(enemy->getPosition().x + 2.5f, enemy->getPosition().y));
 
             ++start_bullets;
         }
@@ -41,7 +40,6 @@ void Game::update(float frametime)
     sf::FloatRect e = enemy->getSpriteSheet().getGlobalBounds();
 
     if (p.intersects(e))
-        //enemy->setState(STATE_DEAD);
         enemy->setPosition(sf::Vector2f(enemy->getPosition().x + 2.5f, enemy->getPosition().y));
 }
 
@@ -49,14 +47,8 @@ void Game::onEvent(sf::Event event)
 {
     player->onEvent(event);
 
-    //if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space/* && this->clock.getElapsedTime().asMilliseconds() >= 175*/)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        //Bullet bullet(this->player->getPosition());
-        //this->m_bullets.push_back(&bullet);
         this->m_bullets.push_back(new Bullet(this->player->getPosition()));
-        //this->clock.restart();
-    }
 }
 
 void Game::init(sf::RenderWindow& window)
