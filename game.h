@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "bullet.h"
 #include "player.h"
+#include "Enemy.h"
 
 class Game
 {
@@ -19,12 +20,17 @@ class Game
             return this->player;
         }
 
+        Enemy* getEnemy()
+        {
+            return this->enemy;
+        }
+
         Player* player = new Player(); // if I use Player player() it doesn't work
+        Enemy* enemy = new Enemy();
         sf::Clock clock; // for dem bullets
 
     //private:
-        std::vector<Bullet> m_bullets; // return m_bullets using a function and make this private
-        sf::Vector2i source; // for player
+        std::vector<Bullet*> m_bullets;
 };
 
 #endif

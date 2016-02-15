@@ -11,24 +11,24 @@ class Player
         Player();
         ~Player();
 
-        void setLives(int lives)
+        void setLives(int val)
         {
-            this->m_lives = lives;
+            this->lives = val;
         }
         
         int getLives()
         {
-            return this->m_lives;
+            return this->lives;
         }
 
-        bool setState(bool _state)
+        void setState(int state)
         {
-            this->m_isAlive = _state;
+            this->alive = state;
         }
 
         bool isAlive()
         {
-            return this->m_isAlive;
+            return this->alive;
         }
 
         void update();
@@ -55,16 +55,13 @@ class Player
             return this->playerSprite;
         }
 
-        sf::Clock playerClock;
-        sf::Time time;
         sf::Texture playerTexture;
         sf::Sprite playerSprite;
         sf::Vector2f position;
-        sf::Vector2i source;
 
     private:
-        int m_lives;
-        bool m_isAlive;
+        int lives;
+        bool alive;
         int direction;
 };
 

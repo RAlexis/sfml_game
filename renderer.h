@@ -13,7 +13,6 @@ class Renderer
 
         void Draw(sf::RenderWindow& window, Game& game);
         //void DrawLives(sf::RenderWindow* _window, Player* _player);
-        void DrawBullet(sf::RenderWindow& window, Game& game);
         //void DrawText(sf::RenderWindow * _window, Game * _game);
 };
 

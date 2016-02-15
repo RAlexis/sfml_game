@@ -3,9 +3,8 @@
 
 int main()
 {
-    Game game;
-
     sf::RenderWindow window(sf::VideoMode(APP_WIDTH, APP_HEIGHT), APP_NAME);
+    Game game;
     game.init(window);
     Renderer renderer;
 
@@ -13,7 +12,6 @@ int main()
     menu.ShowMenu(&window);
 
     sf::Clock clock;
-
 
     while (window.isOpen())
     {
@@ -29,6 +27,7 @@ int main()
 
         game.update(clock.restart().asMilliseconds());
         game.onEvent(event);
+        
         renderer.Draw(window, game);
     }
 

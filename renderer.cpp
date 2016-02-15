@@ -14,23 +14,21 @@ Renderer::~Renderer()
 // Main draw function
 void Renderer::Draw(sf::RenderWindow& window, Game& game)
 {
-    window.clear();
+    window.clear(sf::Color(25, 25, 112));
 
-    window.draw(game.getPlayer()->getSpriteSheet());
-    this->DrawBullet(window, game);
+    if (game.getPlayer()->isAlive())
+        window.draw(game.getPlayer()->getSpriteSheet());
+
+    if (game.getEnemy()->isAlive())
+        window.draw(game.getEnemy()->getSpriteSheet());
+
+    for (auto& bullet : game.m_bullets)
+        window.draw(bullet->getSprite());
 
     window.display();
 }
 
-void Renderer::DrawBullet(sf::RenderWindow& window, Game& game)
-{
-    for (auto& i : game.m_bullets)
-    {
-            window.draw(i);
-            //i.setAlreadyFired(true);
-    }
-}
-
+// might make use of them
 /*
 
 void Renderer::DrawLives(sf::RenderWindow* _window, Player* _player)
@@ -47,12 +45,6 @@ void Renderer::DrawLives(sf::RenderWindow* _window, Player* _player)
     text.setPosition(0, 575);
 
     _window->draw(text);
-}
-
-void Renderer::DrawBullet(sf::RenderWindow* _window, Game* _game)
-{
-    for (std::vector<Bullet>::iterator it = _game->m_bullets.begin(); it != _game->m_bullets.end(); ++it)
-        _window->draw(*it);
 }
 
 void Renderer::DrawText(sf::RenderWindow* _window, Game* _game)

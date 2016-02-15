@@ -2,21 +2,21 @@
 #define _BULLET_H
 
 #include <SFML/Graphics.hpp>
-#include <math.h>
 #include "gamedefines.h"
 
-class Bullet : public sf::Drawable, public sf::Transformable {
+/*
+class Bullet
+{
     static const float lifetime;
     static const float speed;
 
 public:
-    Bullet(sf::Vector2f position, int direction);
+    Bullet(sf::Vector2f position);
     ~Bullet();
 
     bool isAlive();
     void kill();
     void update(float frametime);
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     void setAlreadyFired(bool val)
     {
@@ -28,13 +28,13 @@ public:
         return alreadyFired;
     }
 
-    int getXFromDirection(int dir)
+    sf::Sprite getSprite()
     {
-        if (dir == DIRECTION_LEFT)
-            return -1;
-        else
-            return 1;
+        return this->bulletSprite;
     }
+
+    sf::Texture bulletTexture;
+    sf::Sprite bulletSprite;
 
 private:
     bool is_alive;
@@ -42,5 +42,39 @@ private:
     sf::Vector2f direction;
     bool alreadyFired;
 };
+*/
 
+class Bullet
+{
+    static const float lifetime;
+    static const float speed;
+
+    public:
+        Bullet(sf::Vector2f position);
+        ~Bullet();
+        void update(float frametime);
+
+        bool isAlive()
+        {
+            return this->alive;
+        }
+
+        void kill()
+        {
+            this->alive = false;
+        }
+
+        sf::Sprite getSprite()
+        {
+            return this->bulletSprite;
+        }
+
+        sf::Texture bulletTexture;
+        sf::Sprite bulletSprite;
+        
+    private:
+        bool alive;
+        float remainingLife;
+        sf::Vector2f direction;
+};
 #endif

@@ -6,11 +6,6 @@
 #define APP_WIDTH 800
 #define APP_HEIGHT 600
 
-#define PLAYER_SPEED_UP -2.5
-#define PLAYER_SPEED_DOWN 2.5
-#define PLAYER_SPEED_LEFT -2.5
-#define PLAYER_SPEED_RIGHT 2.5
-
 #define DEG2RAD 3.14159f / 180.0f
 
 enum Direction

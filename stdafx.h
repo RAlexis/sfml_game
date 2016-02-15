@@ -10,5 +10,6 @@
 #include "player.h"
 #include "bullet.h"
 #include "game.h"
+#include "Enemy.h"
 
 #endif
