@@ -27,7 +27,6 @@ class Game
 
         Player* player = new Player(); // if I use Player player() it doesn't work
         Enemy* enemy = new Enemy();
-        sf::Clock clock; // for dem bullets
 
     //private:
         std::vector<Bullet*> m_bullets;
