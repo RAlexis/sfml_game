@@ -12,7 +12,8 @@ class Renderer
         ~Renderer();
 
         void Draw(sf::RenderWindow& window, Game& game);
-        //void DrawLives(sf::RenderWindow* _window, Player* _player);
+        void drawLives(sf::RenderWindow& window, Player& player);
+        void DrawHealthBar(sf::RenderWindow & window, Enemy & enemy);
         //void DrawText(sf::RenderWindow * _window, Game * _game);
 };
 

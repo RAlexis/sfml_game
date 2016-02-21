@@ -3,12 +3,12 @@
 
 Player::Player()
 {
-    this->lives = 3;
+    this->healthPoints = 3;
     position.x = APP_WIDTH / 2;
     position.y = APP_HEIGHT / 2;
 
     if (!playerTexture.loadFromFile("img/player_spaceship.png"))
-        std::cout << "[ERROR] Could not load player_spaceship.png." << std::endl;
+        std::cout << "[ERROR] Could not load img/player_spaceship.png." << std::endl;
 
     playerSprite.setTexture(playerTexture);
     playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
@@ -22,7 +22,7 @@ Player::~Player()
 
 void Player::update()
 {
-    if (lives == 0)
+    if (healthPoints == 0)
         alive = false;
 
     if (position.x < -10.0f)
@@ -68,4 +68,10 @@ void Player::onEvent(sf::Event& event)
         //this->getSpriteSheet().move(0, -20);
         this->setDirection(DIRECTION_LEFT);
     }
+}
+
+void Player::onCollision()
+{
+    this->setPosition(sf::Vector2f(300, 300));
+    this->setHP(healthPoints - 1);
 }

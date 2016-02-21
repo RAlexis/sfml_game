@@ -19,34 +19,66 @@ void Renderer::Draw(sf::RenderWindow& window, Game& game)
     if (game.getPlayer()->isAlive())
         window.draw(game.getPlayer()->getSpriteSheet());
 
-    if (game.getEnemy()->isAlive())
-        window.draw(game.getEnemy()->getSpriteSheet());
+    //if (game.getEnemy()->isAlive())
+    for (auto& enemy : game.enemies)
+    {
+        if (enemy->isAlive())
+        {
+            window.draw(enemy->getSpriteSheet());
+            DrawHealthBar(window, *enemy);
+        }
+    }
 
     for (auto& bullet : game.m_bullets)
         window.draw(bullet->getSprite());
 
+    drawLives(window, *game.getPlayer());
+
     window.display();
 }
 
-// might make use of them
-/*
 
-void Renderer::DrawLives(sf::RenderWindow* _window, Player* _player)
+void Renderer::drawLives(sf::RenderWindow& window, Player& player)
 {
+    sf::Texture heartTexture;
+    sf::Sprite heartSprite;
+
+    if (!heartTexture.loadFromFile("img/heart.png"))
+        std::cout << "[ERROR] Could not load heart.png." << std::endl;
+
+    heartSprite.setTexture(heartTexture);
+    heartSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+    heartSprite.setScale(0.6f, 0.6f);
+    heartSprite.setPosition(0, 575);
+
+
     sf::Font font;
     font.loadFromFile("arial.ttf");
 
     std::ostringstream tmp;
-   // tmp << "Lives: " << _player->GetLives();
+    tmp << "x" << player.getHP();
 
     sf::Text text(tmp.str(), font);
     text.setCharacterSize(15);
     text.setColor(sf::Color::Green);
-    text.setPosition(0, 575);
+    text.setPosition(20, 575);
 
-    _window->draw(text);
+    window.draw(heartSprite);
+    
+    window.draw(text);
 }
 
+void Renderer::DrawHealthBar(sf::RenderWindow& window, Enemy& enemy)
+{
+    sf::RectangleShape healthBar(sf::Vector2f(32, 5));
+    healthBar.setFillColor(sf::Color::Red);
+    healthBar.setScale(static_cast<float>(enemy.getHealth()) / enemy.getMaxHP(), 1);
+    healthBar.setPosition(enemy.getPosition().x - 32, enemy.getPosition().y - 45);
+
+    window.draw(healthBar);
+}
+
+/*
 void Renderer::DrawText(sf::RenderWindow* _window, Game* _game)
 {
     sf::Font font;

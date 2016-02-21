@@ -1,14 +1,15 @@
 #include "Enemy.h"
 #include <iostream>
 
-Enemy::Enemy()
+Enemy::Enemy(sf::Vector2f pos)
 {
-    this->lives = 1;
+    this->healthPoints = 250;
+    this->maxHP = 250;
 
-    position = sf::Vector2f(700, 100);
+    position = pos;
 
     if (!enemyTexture.loadFromFile("img/enemy_spaceship.png"))
-        std::cout << "[ERROR] Could not load enemy_spaceship.png." << std::endl;
+        std::cout << "[ERROR] Could not load img/enemy_spaceship.png." << std::endl;
 
     enemySprite.setTexture(enemyTexture);
     enemySprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
@@ -23,9 +24,9 @@ Enemy::~Enemy()
 
 void Enemy::update()
 {
-    if (lives == 0)
+    if (healthPoints == 0) // hackfix until I do some proper stuff like a vector of enemies
         alive = false;
-
+    
     if (position.x < -10.0f)
         position.x = APP_WIDTH;
     else if (position.x > APP_WIDTH)
@@ -35,7 +36,8 @@ void Enemy::update()
         position.y = APP_HEIGHT;
     else if (position.y > APP_HEIGHT)
         position.y = 0.0f;
-    
-    enemySprite.setPosition(position);
 
+    //enemySprite.move(0.0f, 0.5f);
+    position.y += 0.5f;
+    enemySprite.setPosition(position);
 }

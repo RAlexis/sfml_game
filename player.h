@@ -11,14 +11,14 @@ class Player
         Player();
         ~Player();
 
-        void setLives(int val)
+        void setHP(int val)
         {
-            this->lives = val;
+            this->healthPoints = val;
         }
         
-        int getLives()
+        int getHP()
         {
-            return this->lives;
+            return this->healthPoints;
         }
 
         void setState(int state)
@@ -32,6 +32,11 @@ class Player
         }
 
         void update();
+
+        void setPosition(sf::Vector2f pos)
+        {
+            this->position = pos;
+        }
 
         sf::Vector2f getPosition()
         {
@@ -55,12 +60,14 @@ class Player
             return this->playerSprite;
         }
 
+        void onCollision();
+
         sf::Texture playerTexture;
         sf::Sprite playerSprite;
         sf::Vector2f position;
 
     private:
-        int lives;
+        int healthPoints;
         bool alive;
         int direction;
 };

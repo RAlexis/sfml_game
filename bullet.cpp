@@ -11,7 +11,7 @@ Bullet::Bullet(sf::Vector2f position)
     this->direction = sf::Vector2f(0, -1); // upwards
 
     if (!bulletTexture.loadFromFile("img/bullet.png"))
-        std::cout << "[ERROR] Could not load bullet.png." << std::endl;
+        std::cout << "[ERROR] Could not load img/bullet.png." << std::endl;
 
     bulletSprite.setTexture(bulletTexture);
     bulletSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));

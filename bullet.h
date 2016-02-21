@@ -24,6 +24,11 @@ class Bullet
             this->alive = false;
         }
 
+        int getRemainingLife()
+        {
+            return this->remainingLife;
+        }
+
         sf::Sprite getSprite()
         {
             return this->bulletSprite;

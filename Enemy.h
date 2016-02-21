@@ -7,7 +7,7 @@
 class Enemy
 {
     public:
-        Enemy();
+        Enemy(sf::Vector2f pos);
         ~Enemy();
         void update();
 
@@ -23,12 +23,15 @@ class Enemy
 
         sf::Vector2f getPosition()
         {
-            return this->position;
+            return this->enemySprite.getPosition();
         }
 
         void setState(int state)
         {
             this->alive = state;
+
+            if (state == STATE_DEAD)
+                this->healthPoints = 0;
         }
 
         bool isAlive()
@@ -36,12 +39,33 @@ class Enemy
             return this->alive;
         }
 
+        int getLives()
+        {
+            return this->healthPoints;
+        }
+
+        void setLives(int val)
+        {
+            this->healthPoints = val;
+        }
+
+        float getMaxHP()
+        {
+            return this->maxHP;
+        }
+
+        int getHealth()
+        {
+            return this->healthPoints;
+        }
+
     private:
-        int lives;
+        int healthPoints;
         sf::Texture enemyTexture;
         sf::Sprite enemySprite;
         sf::Vector2f position;
         bool alive;
+        float maxHP;
 };
 
 #endif
