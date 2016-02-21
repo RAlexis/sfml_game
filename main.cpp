@@ -20,7 +20,7 @@ int main()
     {
         float randX = rand() % 800 + 1;
         //float randY = rand() % 600 + 1;
-        float randY = rand() % 100 + 1;
+        float randY = -(rand() % 100 + 1);
         std::cout << randX << " " << randY << " ";
         game.enemies.push_back(new Enemy(sf::Vector2f(randX, randY)));
     }

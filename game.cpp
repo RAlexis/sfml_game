@@ -46,7 +46,11 @@ void Game::update(float frametime)
             for (auto& enemy : enemies)
             {
                 if (Collision::PixelPerfectTest((*start_bullets)->getSprite(), enemy->getSpriteSheet(), 0))
+                {
                     enemy->setLives(enemy->getLives() - 1);
+                    //start_bullets = this->m_bullets.erase(start_bullets);
+                    (*start_bullets)->kill();
+                }
 
                 if (enemy->getLives() < 0)
                     enemy->setState(STATE_DEAD);
@@ -57,16 +61,28 @@ void Game::update(float frametime)
         else
             start_bullets = this->m_bullets.erase(start_bullets);
     }
-
-    for (auto& enemy : enemies)
+    
+    std::vector<Enemy*>::iterator start_enemies = this->enemies.begin();
+    while (start_enemies != enemies.end())
     {
-        //this->m_bullets.push_back(new Bullet(enemy->getPosition()));
+        //for (auto& enemy : enemies)
+        //{
+            //this->m_bullets.push_back(new Bullet(enemy->getPosition()));
 
-        if (Collision::PixelPerfectTest(player->getSpriteSheet(), enemy->getSpriteSheet(), 0))
-        {
-            enemy->setState(STATE_DEAD);
-            player->onCollision();
-        }
+            if (!(*start_enemies)->isAlive())
+            {
+                start_enemies = enemies.erase(start_enemies);
+                continue;
+            }
+
+            if (Collision::PixelPerfectTest(player->getSpriteSheet(), (*start_enemies)->getSpriteSheet(), 0))
+            {
+                (*start_enemies)->setState(STATE_DEAD);
+                player->onCollision();
+            }
+        //}
+
+            ++start_enemies;
     }
 
    // if (Collision::PixelPerfectTest(player->getSpriteSheet(), enemy->getSpriteSheet(), 0))
