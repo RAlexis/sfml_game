@@ -3,15 +3,14 @@
 
 Game::Game()
 {
-    /*if (buffer.loadFromFile("audio/Laser_Shoot.wav"))
+    if (buffer.loadFromFile("audio/Laser_Shoot.wav"))
     {
         sound.setBuffer(buffer);
         sound.setPitch(1.5);
         sound.setVolume(7.5);
-        //sound.play();
     }
     else
-        std::cout << "[ERROR] Could not load audio/Laser_Shoot.wav." << std::endl;*/
+        std::cout << "[ERROR] Could not load audio/Laser_Shoot.wav." << std::endl;
 
     this->killCounter = 0;
     this->newEnemyBaseHP = 25;
@@ -51,55 +50,50 @@ void Game::update(float frametime)
         else
             start_bullets = this->m_bullets.erase(start_bullets);
     }
-    
-    std::vector<Enemy*>::iterator start_enemies = this->enemies.begin();
-    while (start_enemies != enemies.end())
+
+    for (int i = 0; i < enemies.size(); i++)
     {
-        (*start_enemies)->update();
+        enemies[i]->update();
 
-            if (!(*start_enemies)->isAlive())
+        if (!enemies[i]->isAlive())
+        {
+            ++killCounter;
+
+            if (killCounter % 5 == 0)
             {
-                ++killCounter;
-
-                if (killCounter % 7 == 0)
-                {
-                    player->setHP(player->getHP() + 1);
-
-                    float randX = rand() % 800 + 1;
-                    float randY = (rand() % 100 + 1);
-                    float moveSpeed = rand() % 2 + 0.5;
-
-                    Enemy* enemy = new Enemy(sf::Vector2f(randX, randY), moveSpeed);
-                    newEnemyBaseHP = newEnemyBaseHP + 1;
-                    enemy->setMaxHP(newEnemyBaseHP);
-                    enemy->setHP(newEnemyBaseHP);
-
-                    enemies.push_back(enemy);
-                }
+                player->setHP(player->getHP() + 1);
 
                 float randX = rand() % 800 + 1;
                 float randY = (rand() % 100 + 1);
                 float moveSpeed = rand() % 2 + 0.5;
 
                 Enemy* enemy = new Enemy(sf::Vector2f(randX, randY), moveSpeed);
-                newEnemyBaseHP = newEnemyBaseHP + 1;
                 enemy->setMaxHP(newEnemyBaseHP);
                 enemy->setHP(newEnemyBaseHP);
 
-                (*start_enemies) = enemy;
-                continue;
+                enemies.push_back(enemy);
             }
 
-            if (Collision::PixelPerfectTest(player->getSpriteSheet(), (*start_enemies)->getSpriteSheet(), 0))
-            {
-                (*start_enemies)->setState(STATE_DEAD);
-                player->onCollision();
-                ++killCounter;
-            }
+            float randX = rand() % 800 + 1;
+            float randY = (rand() % 100 + 1);
+            float moveSpeed = rand() % 2 + 0.5;
 
-            ++start_enemies;
+            Enemy* enemy = new Enemy(sf::Vector2f(randX, randY), moveSpeed);
+            newEnemyBaseHP = newEnemyBaseHP + 1;
+            enemy->setMaxHP(newEnemyBaseHP);
+            enemy->setHP(newEnemyBaseHP);
+
+            enemies[i] = enemy;
+            continue;
+        }
+
+        if (Collision::PixelPerfectTest(player->getSpriteSheet(), enemies[i]->getSpriteSheet(), 0))
+        {
+            enemies[i]->setState(STATE_DEAD);
+            player->onCollision();
+            ++killCounter;
+        }
     }
-
 }
 
 void Game::onEvent(sf::Event event)
@@ -109,7 +103,7 @@ void Game::onEvent(sf::Event event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
         this->m_bullets.push_back(new Bullet(this->player->getPosition()));
-        //sound.play(); // deactivated sound
+        //sound.play();
     }
 }
 

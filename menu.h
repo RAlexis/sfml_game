@@ -29,6 +29,8 @@ class Menu
         int m_selectedItemIndex;
         sf::Font font;
         sf::Text menu[NUMBER_OF_ITEMS];
+        sf::Texture bgTexture;
+        sf::Sprite bgSprite;
 };
 
 #endif

@@ -15,6 +15,10 @@ class Renderer
         void drawLives(sf::RenderWindow& window, Player& player);
         void DrawHealthBar(sf::RenderWindow& window, Enemy& enemy);
         void drawKillCounter(sf::RenderWindow& window, Game& game);
+
+    private:
+        sf::Texture bgTexture;
+        sf::Sprite bgSprite;
 };
 
 #endif

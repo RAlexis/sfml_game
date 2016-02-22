@@ -2,7 +2,7 @@
 #define _GAME_H
 
 #include <SFML/Graphics.hpp>
-//#include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include "bullet.h"
 #include "player.h"
 #include "Enemy.h"
@@ -29,8 +29,8 @@ class Game
 
         Player* player = new Player();
         float remainingLife;
-        //sf::SoundBuffer buffer;
-        //sf::Sound sound;
+        sf::SoundBuffer buffer;
+        sf::Sound sound;
 
     //private:
         std::vector<Bullet*> m_bullets;

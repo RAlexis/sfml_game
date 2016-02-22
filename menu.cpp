@@ -1,8 +1,14 @@
 #include "menu.h"
+#include "gamedefines.h"
 
 Menu::Menu(sf::Vector2u _resolution)
 {
     this->m_selectedItemIndex = 0;
+
+    bgTexture.loadFromFile("img/background.png");
+    bgTexture.setRepeated(true);
+    bgSprite.setTexture(bgTexture);
+    bgSprite.setTextureRect(sf::IntRect(0, 0, APP_WIDTH, APP_HEIGHT));
 
     font.loadFromFile("arial.ttf");
 
@@ -77,6 +83,7 @@ void Menu::ShowMenu(sf::RenderWindow* _window)
 
         _window->clear();
 
+        _window->draw(bgSprite);
         this->Draw(_window);
 
         _window->display();

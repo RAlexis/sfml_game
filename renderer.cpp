@@ -3,7 +3,10 @@
 
 Renderer::Renderer()
 {
-
+    bgTexture.loadFromFile("img/background.png");
+    bgTexture.setRepeated(true);
+    bgSprite.setTexture(bgTexture);
+    bgSprite.setTextureRect(sf::IntRect(0, 0, APP_WIDTH, APP_HEIGHT));
 }
 
 Renderer::~Renderer()
@@ -15,6 +18,7 @@ Renderer::~Renderer()
 void Renderer::Draw(sf::RenderWindow& window, Game& game)
 {
     window.clear(sf::Color(25, 25, 112));
+    window.draw(bgSprite);
 
     if (game.getPlayer()->isAlive())
         window.draw(game.getPlayer()->getSpriteSheet());
