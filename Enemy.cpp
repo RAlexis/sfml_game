@@ -1,10 +1,11 @@
 #include "Enemy.h"
 #include <iostream>
 
-Enemy::Enemy(sf::Vector2f pos)
+Enemy::Enemy(sf::Vector2f pos, float mSpeed)
 {
-    this->healthPoints = 250;
-    this->maxHP = 250;
+    this->healthPoints = 25;
+    this->maxHP = 25;
+    this->moveSpeed = mSpeed;
 
     position = pos;
 
@@ -24,7 +25,7 @@ Enemy::~Enemy()
 
 void Enemy::update()
 {
-    if (healthPoints == 0) // hackfix until I do some proper stuff like a vector of enemies
+    if (healthPoints == 0)
         alive = false;
     
     if (position.x < -10.0f)
@@ -37,7 +38,6 @@ void Enemy::update()
     else if (position.y > APP_HEIGHT)
         position.y = 0.0f;
 
-    //enemySprite.move(0.0f, 0.5f);
-    position.y += 0.5f;
+    position.y += moveSpeed;
     enemySprite.setPosition(position);
 }

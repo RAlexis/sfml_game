@@ -42,30 +42,22 @@ void Player::onEvent(sf::Event& event)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        //std::cout << "moving up" << std::endl;
         position.y -= 2.5;
-        //this->getSpriteSheet().move(0, 2.5);
         this->setDirection(DIRECTION_UP);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        //std::cout << "moving right" << std::endl;
         position.x += 2.5;
-        //this->getSpriteSheet().move(0, 20);
         this->setDirection(DIRECTION_RIGHT);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        //std::cout << "moving down" << std::endl;
         position.y += 2.5;
-        //this->getSpriteSheet().move(-20, 0);
         this->setDirection(DIRECTION_DOWN);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        //std::cout << "moving left" << std::endl;
         position.x -= 2.5;
-        //this->getSpriteSheet().move(0, -20);
         this->setDirection(DIRECTION_LEFT);
     }
 }

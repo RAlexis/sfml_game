@@ -19,7 +19,6 @@ void Renderer::Draw(sf::RenderWindow& window, Game& game)
     if (game.getPlayer()->isAlive())
         window.draw(game.getPlayer()->getSpriteSheet());
 
-    //if (game.getEnemy()->isAlive())
     for (auto& enemy : game.enemies)
     {
         if (enemy->isAlive())
@@ -33,6 +32,7 @@ void Renderer::Draw(sf::RenderWindow& window, Game& game)
         window.draw(bullet->getSprite());
 
     drawLives(window, *game.getPlayer());
+    drawKillCounter(window, game);
 
     window.display();
 }
@@ -72,10 +72,26 @@ void Renderer::DrawHealthBar(sf::RenderWindow& window, Enemy& enemy)
 {
     sf::RectangleShape healthBar(sf::Vector2f(32, 5));
     healthBar.setFillColor(sf::Color::Red);
-    healthBar.setScale(static_cast<float>(enemy.getHealth()) / enemy.getMaxHP(), 1);
+    healthBar.setScale(static_cast<float>(enemy.getHP()) / enemy.getMaxHP(), 1);
     healthBar.setPosition(enemy.getPosition().x - 32, enemy.getPosition().y - 45);
 
     window.draw(healthBar);
+}
+
+void Renderer::drawKillCounter(sf::RenderWindow& window, Game& game)
+{
+    sf::Font font;
+    font.loadFromFile("arial.ttf");
+
+    std::ostringstream tmp;
+    tmp << "Kills: " << game.getKillCounter();
+
+    sf::Text text(tmp.str(), font);
+    text.setCharacterSize(15);
+    text.setColor(sf::Color::Red);
+    text.setPosition(0, 0);
+
+    window.draw(text);
 }
 
 /*

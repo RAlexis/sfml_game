@@ -7,7 +7,7 @@
 class Enemy
 {
     public:
-        Enemy(sf::Vector2f pos);
+        Enemy(sf::Vector2f pos, float mSpeed);
         ~Enemy();
         void update();
 
@@ -39,14 +39,19 @@ class Enemy
             return this->alive;
         }
 
-        int getLives()
+        void setHP(int val)
+        {
+            this->healthPoints = val;
+        }
+
+        int getHP()
         {
             return this->healthPoints;
         }
 
-        void setLives(int val)
+        void setMaxHP(int val)
         {
-            this->healthPoints = val;
+            this->maxHP = val;
         }
 
         float getMaxHP()
@@ -54,18 +59,19 @@ class Enemy
             return this->maxHP;
         }
 
-        int getHealth()
+        void setMoveSpeed(int val)
         {
-            return this->healthPoints;
+            this->moveSpeed = val;
         }
 
     private:
-        int healthPoints;
         sf::Texture enemyTexture;
         sf::Sprite enemySprite;
         sf::Vector2f position;
         bool alive;
-        float maxHP;
+        int healthPoints;
+        int maxHP;
+        float moveSpeed;
 };
 
 #endif

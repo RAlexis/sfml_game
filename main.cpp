@@ -1,7 +1,5 @@
 #include "main.h"
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
 
 int main()
 {
@@ -12,18 +10,6 @@ int main()
 
     Menu menu(window.getSize());
     menu.ShowMenu(&window);
-
-    //game.enemies.push_back(new Enemy());
-    srand(time(0));
-
-    for (int i = 0; i < 10; i++)
-    {
-        float randX = rand() % 800 + 1;
-        //float randY = rand() % 600 + 1;
-        float randY = -(rand() % 100 + 1);
-        std::cout << randX << " " << randY << " ";
-        game.enemies.push_back(new Enemy(sf::Vector2f(randX, randY)));
-    }
 
     sf::Clock clock;
 

@@ -12,6 +12,9 @@ Game::Game()
     }
     else
         std::cout << "[ERROR] Could not load audio/Laser_Shoot.wav." << std::endl;*/
+
+    this->killCounter = 0;
+    this->newEnemyBaseHP = 25;
 }
 
 Game::~Game()
@@ -22,9 +25,6 @@ Game::~Game()
 void Game::update(float frametime)
 {
     player->update();
-
-    for (auto& enemy : enemies)
-        enemy->update();
     
     std::vector<Bullet*>::iterator start_bullets = this->m_bullets.begin();
     while (start_bullets != this->m_bullets.end())
@@ -34,25 +34,15 @@ void Game::update(float frametime)
             (*start_bullets)->update(frametime);
             remainingLife = (*start_bullets)->getRemainingLife();
 
-            //if (Collision::PixelPerfectTest((*start_bullets)->getSprite(), enemy->getSpriteSheet(), 0))
-                //enemy->setState(STATE_DEAD);
-           // {
-                //enemy->setLives(enemy->getLives() - 1);
-               // enemy->setState(STATE_DEAD);
-                //enemy->setPosition(sf::Vector2f(-500, -500));
-                //std::cout << "enemy has " << enemy->getLives() << " lives left." << std::endl;
-          //  }
-
             for (auto& enemy : enemies)
             {
                 if (Collision::PixelPerfectTest((*start_bullets)->getSprite(), enemy->getSpriteSheet(), 0))
                 {
-                    enemy->setLives(enemy->getLives() - 1);
-                    //start_bullets = this->m_bullets.erase(start_bullets);
+                    enemy->setHP(enemy->getHP() - 1);
                     (*start_bullets)->kill();
                 }
 
-                if (enemy->getLives() < 0)
+                if (enemy->getHP() < 0)
                     enemy->setState(STATE_DEAD);
             }
 
@@ -65,13 +55,38 @@ void Game::update(float frametime)
     std::vector<Enemy*>::iterator start_enemies = this->enemies.begin();
     while (start_enemies != enemies.end())
     {
-        //for (auto& enemy : enemies)
-        //{
-            //this->m_bullets.push_back(new Bullet(enemy->getPosition()));
+        (*start_enemies)->update();
 
             if (!(*start_enemies)->isAlive())
             {
-                start_enemies = enemies.erase(start_enemies);
+                ++killCounter;
+
+                if (killCounter % 7 == 0)
+                {
+                    player->setHP(player->getHP() + 1);
+
+                    float randX = rand() % 800 + 1;
+                    float randY = (rand() % 100 + 1);
+                    float moveSpeed = rand() % 2 + 0.5;
+
+                    Enemy* enemy = new Enemy(sf::Vector2f(randX, randY), moveSpeed);
+                    newEnemyBaseHP = newEnemyBaseHP + 1;
+                    enemy->setMaxHP(newEnemyBaseHP);
+                    enemy->setHP(newEnemyBaseHP);
+
+                    enemies.push_back(enemy);
+                }
+
+                float randX = rand() % 800 + 1;
+                float randY = (rand() % 100 + 1);
+                float moveSpeed = rand() % 2 + 0.5;
+
+                Enemy* enemy = new Enemy(sf::Vector2f(randX, randY), moveSpeed);
+                newEnemyBaseHP = newEnemyBaseHP + 1;
+                enemy->setMaxHP(newEnemyBaseHP);
+                enemy->setHP(newEnemyBaseHP);
+
+                (*start_enemies) = enemy;
                 continue;
             }
 
@@ -79,25 +94,22 @@ void Game::update(float frametime)
             {
                 (*start_enemies)->setState(STATE_DEAD);
                 player->onCollision();
+                ++killCounter;
             }
-        //}
 
             ++start_enemies;
     }
 
-   // if (Collision::PixelPerfectTest(player->getSpriteSheet(), enemy->getSpriteSheet(), 0))
-     //   enemy->setPosition(sf::Vector2f(enemy->getPosition().x + 2.5f, enemy->getPosition().y));
 }
 
 void Game::onEvent(sf::Event event)
 {
     player->onEvent(event);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) /*&& m_bullets.size() < 1*/)
-    //if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space && remainingLife <= 750.f)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
         this->m_bullets.push_back(new Bullet(this->player->getPosition()));
-        //sound.play();
+        //sound.play(); // deactivated sound
     }
 }
 
@@ -106,4 +118,15 @@ void Game::init(sf::RenderWindow& window)
     window.setKeyRepeatEnabled(false);
     window.setFramerateLimit(APP_FRAMESPERSECOND);
     window.setVerticalSyncEnabled(true);
+
+    srand(time(0));
+
+    for (int i = 0; i < 10; i++)
+    {
+        float randX = rand() % 800 + 100;
+        float randY = (rand() % 100 + 1);
+        float moveSpeed = rand() % 2 + 0.5;
+
+        enemies.push_back(new Enemy(sf::Vector2f(randX, randY), moveSpeed));
+    }
 }

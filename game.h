@@ -22,8 +22,12 @@ class Game
             return this->player;
         }
 
-        Player* player = new Player(); // if I use Player player() it doesn't work
-        //Enemy* enemy = new Enemy();
+        int getKillCounter()
+        {
+            return this->killCounter;
+        }
+
+        Player* player = new Player();
         float remainingLife;
         //sf::SoundBuffer buffer;
         //sf::Sound sound;
@@ -31,6 +35,8 @@ class Game
     //private:
         std::vector<Bullet*> m_bullets;
         std::vector<Enemy*> enemies;
+        int killCounter;
+        int newEnemyBaseHP;
 };
 
 #endif
